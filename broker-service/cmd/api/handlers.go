@@ -1,15 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 )
-
-type jsonResponse struct {
-	Error   bool        `json:"error"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
-}
 
 func (app *Config) Broker(w http.ResponseWriter, req *http.Request) {
 	payload := jsonResponse{
@@ -17,9 +10,5 @@ func (app *Config) Broker(w http.ResponseWriter, req *http.Request) {
 		Message: "Hit the broker",
 	}
 
-	m, _ := json.MarshalIndent(payload, "", "\t")
-	w.Header().Set("Content-Tyoe", "application/json")
-
-	w.WriteHeader(http.StatusAccepted)
-	w.Write(m)
+	_ = app.writeJSON(w, http.StatusOK, payload)
 }
