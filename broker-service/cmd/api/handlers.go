@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 )
 
@@ -29,7 +30,7 @@ func (app *Config) Broker(w http.ResponseWriter, req *http.Request) {
 func (app *Config) HandleSubmission(w http.ResponseWriter, req *http.Request) {
 	var requestPayload RequestPayload
 
-	err := app.readJSON(w, req, requestPayload)
+	err := app.readJSON(w, req, &requestPayload)
 	if err != nil {
 		app.errJSON(w, err)
 		return
@@ -37,7 +38,7 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, req *http.Request) {
 
 	switch requestPayload.Action {
 	case "auth":
-
+		app.authenticate(w, requestPayload.Auth)
 	default:
 		app.errJSON(w, errors.New("unknown action"))
 	}
@@ -64,6 +65,7 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 		app.errJSON(w, errors.New("Invalid Credential"))
 		return
 	} else if resp.StatusCode != http.StatusAccepted {
+		log.Printf("Status Code: %v", resp.StatusCode)
 		app.errJSON(w, errors.New("Error calling auth"))
 		return
 	}
