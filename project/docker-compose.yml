@@ -32,7 +32,7 @@ services:
       replicas: 1
     environment:
       MAIL_DOMAIN: localhost
-      MAIL_HOST: mailhog
+      MAIL_HOST: mailpit
       MAIL_PORT: 1025
       MAIL_ENCRYPTION: none
       MAIL_USERNAE: ""
@@ -88,8 +88,8 @@ services:
     volumes:
       - ./db-data/mongo/:/data/db
 
-  mailhog:
-    image: 'mailhog/mailhog:latest'
+  mailpit:
+    image: axllent/mailpit
     ports:
       - "1025:1025"
       - "8025:8025"
