@@ -44,6 +44,8 @@
     let sent = document.getElementById("payload");
     let recevied = document.getElementById("received");
     let mailBtn = document.getElementById("mailBtn");
+    let BrokerURL = "{{ .BrokerURL }}";
+    console.log("Broker URL:", BrokerURL);  
 
     mailBtn.addEventListener("click", function() {
 
@@ -191,8 +193,6 @@
             method: 'POST',
         }
 
-        let BrokerURL = "{{ .BrokerURL }}";
-        console.log("Broker URL:", BrokerURL);  
 
         fetch({{.BrokerURL}}, body)
         .then((response) => response.json())
